@@ -21,3 +21,9 @@ def update_sensor_data():
         time.sleep(1)
 
 
+threading.Thread(target=update_sensor_data, daemon=True).start()
+
+
+@app.get("/sensor")
+def get_sensor_data():
+    return sensor_data
