@@ -14,3 +14,10 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+def update_sensor_data():
+    while True:
+        simulate_sensor_reading()
+        time.sleep(1)
+
+
