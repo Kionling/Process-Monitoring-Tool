@@ -1,5 +1,5 @@
 "use client"
-import { useEffect, useState } from 'react';
+import { use, useEffect, useState } from 'react';
 import axios from 'axios';
 import SensorChart from '../app/components/SensorChart';
 
@@ -12,6 +12,8 @@ export default function Home() {
   });
 
   const [tempHistory, setTempHistory] = useState([]);
+  const [pressureHistory, setPressureHistory] = useState([]);
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -23,8 +25,13 @@ export default function Home() {
           const updated = [...prev, res.data.temperature];
           return updated.length > 30 ? updated.slice(-30) : updated;
         });
+        setPressureHistory(prev => {
+          const updated = [...prev, res.data.pressure];
+          return updated.length > 30 ? updated.slice(-30): updated;
+        }
+        )
       } catch (err) {
-        console.error('Error fetching sensor data:', err);
+        console.error('Error fetching sensor data:', error.res.data.error);
       }
     };
 
@@ -45,6 +52,7 @@ export default function Home() {
 
       <h2 style={{ marginTop: '2rem' }}>Temperature Trend</h2>
       <SensorChart label="Temperature (°C)" data={tempHistory} color="rgba(255, 99, 132, 1)" />
+      <SensorChart label="Pressure" data={pressureHistory} color="rgb(0, 136, 255)" />
     </div>
   );
 }
